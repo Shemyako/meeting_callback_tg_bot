@@ -2,4 +2,4 @@ python-telegram-bot>=21.0.1
 pydantic>=2.7
 python-dotenv>=1.0.1
 aiogram>=3.20.0.post0,<4.0.0
-google_lib @ git+https://github.com/Shemyako/google_lib
+google_lib @ git+https://github.com/Shemyako/google_lib@1.0.0
