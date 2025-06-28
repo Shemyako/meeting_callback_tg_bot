@@ -3,6 +3,7 @@ import asyncio
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.types import ErrorEvent
+from google_lib.exceptions import GoogleLibException
 
 from .cache import ConferenceCache
 from .config import TG_BOT_TOKEN
@@ -21,7 +22,7 @@ async def global_error_handler(event: ErrorEvent) -> None:
     update = event.update
     logger.error(f"An error occurred: {exception}")
     if update.message:
-        if isinstance(exception, MeetCallbackError):
+        if isinstance(exception, (MeetCallbackError, GoogleLibException)):
             await update.message.reply(
                 f"Получена ошибка: {exception.message}\nСвяжитесь с администратором",
             )
