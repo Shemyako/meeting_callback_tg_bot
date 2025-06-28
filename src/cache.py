@@ -1,7 +1,9 @@
 from typing import Any
 
+from google_lib.google_sheets_client import GoogleSheetsClient
+
+from .config import GOOGLE_CREDENTIALS_PATH, GOOGLE_SHEET_ID
 from .exceptions import ConfigurationError
-from .google_client import GoogleClient
 
 
 class ConferenceCache:
@@ -17,7 +19,9 @@ class ConferenceCache:
 
     @classmethod
     async def refresh_config(cls) -> None:
-        data = await GoogleClient().get_tab_data("config")
+        data = await GoogleSheetsClient(GOOGLE_CREDENTIALS_PATH, GOOGLE_SHEET_ID).get_tab_data(
+            "config"
+        )
 
         data_to_update = await cls.__prepare_data(data)
 

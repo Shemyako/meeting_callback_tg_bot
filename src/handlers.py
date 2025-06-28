@@ -2,10 +2,10 @@ from aiogram import Dispatcher, Router
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
+from google_lib.google_sheets_client import GoogleSheetsClient
 
 from .cache import ConferenceCache
-from .config import ADMIN_IDS
-from .google_client import GoogleClient
+from .config import ADMIN_IDS, GOOGLE_CREDENTIALS_PATH, GOOGLE_SHEET_ID
 from .states import FeedbackForm
 
 router = Router()
@@ -38,7 +38,9 @@ async def cmd_receive_feedback(msg: Message, state: FSMContext) -> None:
     conf_id = data["conf_id"]
     feedback = msg.text.strip()
 
-    await GoogleClient().append_row([msg.from_user.full_name, msg.from_user.id, feedback], conf_id)
+    await GoogleSheetsClient(GOOGLE_CREDENTIALS_PATH, GOOGLE_SHEET_ID).append_row(
+        [msg.from_user.full_name, msg.from_user.id, feedback], conf_id
+    )
     await msg.answer("Спасибо за отзыв!")
     await state.clear()
 
